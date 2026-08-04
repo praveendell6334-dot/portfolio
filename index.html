@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analyst Portfolio Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <!-- Left Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-chart-pie"></i> DataViz
+        </div>
+        <nav>
+            <a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="#"><i class="fa-solid fa-chart-simple"></i> Analytics</a>
+            <a href="#"><i class="fa-solid fa-briefcase"></i> Portfolio</a>
+            <a href="#"><i class="fa-solid fa-pen-to-square"></i> Blog</a>
+            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        
+        <!-- Top Metrics Row -->
+        <div class="metrics-grid">
+            <div class="card glass-card">
+                <div class="card-header">
+                    <span class="icon purple"><i class="fa-solid fa-user-plus"></i></span>
+                    <span class="trend success">+12.5%</span>
+                </div>
+                <h3>New Customers</h3>
+                <p class="value">1,245</p>
+            </div>
+            <div class="card glass-card">
+                <div class="card-header">
+                    <span class="icon blue"><i class="fa-solid fa-dollar-sign"></i></span>
+                    <span class="trend success">+8.2%</span>
+                </div>
+                <h3>Total Revenue</h3>
+                <p class="value">$48.5k</p>
+            </div>
+            <div class="card glass-card">
+                <div class="card-header">
+                    <span class="icon yellow"><i class="fa-solid fa-phone"></i></span>
+                    <span class="trend danger">-2.1%</span>
+                </div>
+                <h3>Inbound Calls</h3>
+                <p class="value">342</p>
+            </div>
+            <div class="card glass-card">
+                <div class="card-header">
+                    <span class="icon purple"><i class="fa-solid fa-phone-volume"></i></span>
+                    <span class="trend success">+4.8%</span>
+                </div>
+                <h3>Outbound Calls</h3>
+                <p class="value">189</p>
+            </div>
+        </div>
+
+        <!-- Middle Section: Charts & Profile -->
+        <div class="middle-grid">
+            
+            <!-- Charts Section -->
+            <div class="charts-wrapper">
+                <div class="card glass-card doughnut-card">
+                    <h3>Skills Balance</h3>
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                    <div class="legend">
+                        <span><i class="fa-solid fa-circle" style="color:#a16eff;"></i> Python</span>
+                        <span><i class="fa-solid fa-circle" style="color:#4d9eff;"></i> SQL</span>
+                        <span><i class="fa-solid fa-circle" style="color:#ffce54;"></i> Tableau</span>
+                    </div>
+                </div>
+
+                <div class="card glass-card line-card">
+                    <h3>Project Impact Over Time</h3>
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Card (Top Right) -->
+            <div class="card glass-card profile-card">
+                <div class="profile-header">
+                    <div class="placeholder-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3>John Doe</h3>
+                    <p class="role">Data Analyst</p>
+                </div>
+                <ul class="profile-details">
+                    <li><i class="fa-solid fa-code purple"></i> Python, SQL, Tableau</li>
+                    <li><i class="fa-solid fa-chart-line blue"></i> 4+ Years Experience</li>
+                    <li><i class="fa-solid fa-graduation-cap yellow"></i> Google Certified</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Accolades Banner -->
+        <div class="accolades-banner">
+            <i class="fa-solid fa-certificate"></i> Certified: Google Data Analytics <span>|</span> AWS Cloud Practitioner <span>|</span> Tableau Specialist
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="bottom-grid">
+            
+            <!-- Blog Insights -->
+            <div class="card glass-card blog-card">
+                <h3>Recent Insights</h3>
+                <div class="blog-item">
+                    <h4>Optimizing Python Pandas for Large Datasets</h4>
+                    <span class="tag">Python</span>
+                    <p>Reducing memory usage by 70% using efficient data types...</p>
+                </div>
+                <div class="blog-item">
+                    <h4>Advanced SQL Window Functions for Churn</h4>
+                    <span class="tag">SQL</span>
+                    <p>Calculating rolling averages to predict user drop-off rates...</p>
+                </div>
+            </div>
+
+            <!-- Project Table -->
+            <div class="card glass-card table-card">
+                <h3>Project Portfolio</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Customer Churn Prediction</td>
+                            <td><span class="badge success">Approved</span></td>
+                        </tr>
+                        <tr>
+                            <td>A/B Testing Analysis</td>
+                            <td><span class="badge success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>Sales Forecasting Model</td>
+                            <td><span class="badge warning">In Progress</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
