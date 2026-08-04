@@ -3,165 +3,837 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Analyst Portfolio Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome for Icons -->
+    <title>Praveen - Data Analyst Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for Charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --accent: #06b6d4;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff10" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,208C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--gray);
+        }
+
+        .about-image {
+            background: var(--gradient);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            font-size: 5rem;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .project-header {
+            background: var(--gradient);
+            padding: 2rem;
+            color: white;
+        }
+
+        .project-body {
+            padding: 2rem;
+        }
+
+        .project-body ul {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .project-body li {
+            padding: 0.5rem 0;
+            color: var(--gray);
+        }
+
+        .project-body li::before {
+            content: '▹';
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .tools {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Certifications */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .cert-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .cert-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .contact .section-title {
+            -webkit-text-fill-color: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .contact-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 60px 1rem;
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            font-size: 1.5rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark);
+        }
+    </style>
 </head>
 <body>
-
-<div class="dashboard-container">
-    <!-- Left Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fa-solid fa-chart-pie"></i> DataViz
-        </div>
-        <nav>
-            <a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="#"><i class="fa-solid fa-chart-simple"></i> Analytics</a>
-            <a href="#"><i class="fa-solid fa-briefcase"></i> Portfolio</a>
-            <a href="#"><i class="fa-solid fa-pen-to-square"></i> Blog</a>
-            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
-        </nav>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="main-content">
-        
-        <!-- Top Metrics Row -->
-        <div class="metrics-grid">
-            <div class="card glass-card">
-                <div class="card-header">
-                    <span class="icon purple"><i class="fa-solid fa-user-plus"></i></span>
-                    <span class="trend success">+12.5%</span>
-                </div>
-                <h3>New Customers</h3>
-                <p class="value">1,245</p>
-            </div>
-            <div class="card glass-card">
-                <div class="card-header">
-                    <span class="icon blue"><i class="fa-solid fa-dollar-sign"></i></span>
-                    <span class="trend success">+8.2%</span>
-                </div>
-                <h3>Total Revenue</h3>
-                <p class="value">$48.5k</p>
-            </div>
-            <div class="card glass-card">
-                <div class="card-header">
-                    <span class="icon yellow"><i class="fa-solid fa-phone"></i></span>
-                    <span class="trend danger">-2.1%</span>
-                </div>
-                <h3>Inbound Calls</h3>
-                <p class="value">342</p>
-            </div>
-            <div class="card glass-card">
-                <div class="card-header">
-                    <span class="icon purple"><i class="fa-solid fa-phone-volume"></i></span>
-                    <span class="trend success">+4.8%</span>
-                </div>
-                <h3>Outbound Calls</h3>
-                <p class="value">189</p>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Praveen</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
+    </nav>
 
-        <!-- Middle Section: Charts & Profile -->
-        <div class="middle-grid">
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" onclick="toggleMenu()">About</a>
+        <a href="#skills" onclick="toggleMenu()">Skills</a>
+        <a href="#projects" onclick="toggleMenu()">Projects</a>
+        <a href="#certifications" onclick="toggleMenu()">Certifications</a>
+        <a href="#contact" onclick="toggleMenu()">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Praveen</h1>
+            <p>Data Analyst | SQL • Python • Excel • Visualization</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#contact" class="btn btn-secondary">Contact Me</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">📊 About Me</h2>
+            <div class="about-content">
+                <div class="about-text animate-on-scroll">
+                    <p>
+                        Data Analyst skilled in SQL, Python, Excel, and data visualization. 
+                        Passionate about turning raw data into actionable insights. 
+                        Strong foundation in statistics and business analysis.
+                    </p>
+                    <p>
+                        I transform complex datasets into clear, compelling stories that drive 
+                        business decisions. With expertise in data cleaning, exploratory analysis, 
+                        and dashboard creation, I help organizations unlock the full potential of their data.
+                    </p>
+                </div>
+                <div class="about-image animate-on-scroll">
+                    <i class="fas fa-chart-line" style="animation: float 3s ease-in-out infinite;"></i>
+                    <p style="font-size: 1.2rem; margin-top: 1rem;">Data Storyteller</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section" style="background: #f1f5f9;">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">🛠️ Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Languages</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Pandas</span>
+                        <span class="skill-tag">NumPy</span>
+                        <span class="skill-tag">Matplotlib</span>
+                        <span class="skill-tag">Seaborn</span>
+                    </div>
+                </div>
+
+                <div class="skill-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Excel</span>
+                        <span class="skill-tag">Power BI</span>
+                        <span class="skill-tag">Tableau</span>
+                        <span class="skill-tag">Jupyter Notebook</span>
+                    </div>
+                </div>
+
+                <div class="skill-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Databases</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                    </div>
+                </div>
+
+                <div class="skill-card animate-on-scroll">
+                    <div class="skill-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Core Skills</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Data Cleaning</span>
+                        <span class="skill-tag">EDA</span>
+                        <span class="skill-tag">Statistical Analysis</span>
+                        <span class="skill-tag">Dashboard Creation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">📈 Projects</h2>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card animate-on-scroll">
+                    <div class="project-header">
+                        <h3>Sales Performance Analysis Dashboard</h3>
+                        <p class="tools">Excel • SQL • Power BI</p>
+                    </div>
+                    <div class="project-body">
+                        <ul>
+                            <li>Analyzed 12 months of retail sales data (10,000+ records)</li>
+                            <li>Built SQL queries to extract monthly trends and top-performing products</li>
+                            <li>Created interactive dashboard showing KPIs, regional performance, and YoY growth</li>
+                        </ul>
+                        <div class="highlight">
+                            <strong>💡 Key Insight:</strong> Identified 25% drop in Q3 sales, recommending targeted promotions
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card animate-on-scroll">
+                    <div class="project-header">
+                        <h3>Customer Churn Prediction Analysis</h3>
+                        <p class="tools">Python • Pandas • Scikit-learn • Matplotlib</p>
+                    </div>
+                    <div class="project-body">
+                        <ul>
+                            <li>Analyzed customer behavior data to identify churn patterns</li>
+                            <li>Performed EDA on demographics, tenure, and service usage</li>
+                            <li>Built logistic regression model with 78% accuracy</li>
+                        </ul>
+                        <div class="highlight">
+                            <strong>💡 Key Insight:</strong> Customers with monthly contracts are 3x more likely to churn
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card animate-on-scroll">
+                    <div class="project-header">
+                        <h3>COVID-19 Global Impact Analysis</h3>
+                        <p class="tools">SQL • Tableau</p>
+                    </div>
+                    <div class="project-body">
+                        <ul>
+                            <li>Extracted and cleaned WHO dataset using SQL joins and CTEs</li>
+                            <li>Analyzed infection rates, mortality trends across continents</li>
+                            <li>Built Tableau dashboard with time-series visualizations</li>
+                        </ul>
+                        <div class="highlight">
+                            <strong>💡 Key Insight:</strong> Visualized vaccination impact on case reduction (60% decline)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card animate-on-scroll">
+                    <div class="project-header">
+                        <h3>E-Commerce Funnel Analysis</h3>
+                        <p class="tools">Python • Excel</p>
+                    </div>
+                    <div class="project-body">
+                        <ul>
+                            <li>Analyzed 50,000 user journey records to identify drop-off points</li>
+                            <li>Calculated conversion rates at each funnel stage</li>
+                            <li>Created cohort analysis for customer retention patterns</li>
+                        </ul>
+                        <div class="highlight">
+                            <strong>💡 Key Insight:</strong> Cart abandonment rate reduced by 15% with suggested UX improvements
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="section" style="background: #f1f5f9;">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">🎓 Certifications</h2>
+            <div class="cert-grid">
+                <div class="cert-card animate-on-scroll">
+                    <div class="cert-icon">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <div>
+                        <h3>Google Data Analytics Professional Certificate</h3>
+                        <p style="color: var(--gray);">Google • Coursera</p>
+                    </div>
+                </div>
+
+                <div class="cert-card animate-on-scroll">
+                    <div class="cert-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div>
+                        <h3>SQL for Data Analysis</h3>
+                        <p style="color: var(--gray);">Coursera</p>
+                    </div>
+                </div>
+
+                <div class="cert-card animate-on-scroll">
+                    <div class="cert-icon">
+                        <i class="fas fa-file-excel"></i>
+                    </div>
+                    <div>
+                        <h3>Microsoft Excel Expert</h3>
+                        <p style="color: var(--gray);">Microsoft</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">📬 Contact</h2>
+            <div class="contact-grid">
+                <div class="contact-card animate-on-scroll">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <a href="mailto:praveen.dataanalyst@gmail.com">praveen.dataanalyst@gmail.com</a>
+                </div>
+
+                <div class="contact-card animate-on-scroll">
+                    <i class="fab fa-linkedin"></i>
+                    <h3>LinkedIn</h3>
+                    <a href="https://linkedin.com/in/praveen-analyst" target="_blank">linkedin.com/in/praveen-analyst</a>
+                </div>
+
+                <div class="contact-card animate-on-scroll">
+                    <i class="fab fa-github"></i>
+                    <h3>GitHub</h3>
+                    <a href="https://github.com/praveen-analytics" target="_blank">github.com/praveen-analytics</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
             
-            <!-- Charts Section -->
-            <div class="charts-wrapper">
-                <div class="card glass-card doughnut-card">
-                    <h3>Skills Balance</h3>
-                    <div class="chart-container">
-                        <canvas id="skillsChart"></canvas>
-                    </div>
-                    <div class="legend">
-                        <span><i class="fa-solid fa-circle" style="color:#a16eff;"></i> Python</span>
-                        <span><i class="fa-solid fa-circle" style="color:#4d9eff;"></i> SQL</span>
-                        <span><i class="fa-solid fa-circle" style="color:#ffce54;"></i> Tableau</span>
-                    </div>
-                </div>
-
-                <div class="card glass-card line-card">
-                    <h3>Project Impact Over Time</h3>
-                    <div class="chart-container">
-                        <canvas id="impactChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Profile Card (Top Right) -->
-            <div class="card glass-card profile-card">
-                <div class="profile-header">
-                    <div class="placeholder-avatar">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <h3>John Doe</h3>
-                    <p class="role">Data Analyst</p>
-                </div>
-                <ul class="profile-details">
-                    <li><i class="fa-solid fa-code purple"></i> Python, SQL, Tableau</li>
-                    <li><i class="fa-solid fa-chart-line blue"></i> 4+ Years Experience</li>
-                    <li><i class="fa-solid fa-graduation-cap yellow"></i> Google Certified</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Accolades Banner -->
-        <div class="accolades-banner">
-            <i class="fa-solid fa-certificate"></i> Certified: Google Data Analytics <span>|</span> AWS Cloud Practitioner <span>|</span> Tableau Specialist
-        </div>
-
-        <!-- Bottom Section -->
-        <div class="bottom-grid">
+            const hamburger = document.querySelector('.hamburger');
+            const spans = hamburger.querySelectorAll('span');
             
-            <!-- Blog Insights -->
-            <div class="card glass-card blog-card">
-                <h3>Recent Insights</h3>
-                <div class="blog-item">
-                    <h4>Optimizing Python Pandas for Large Datasets</h4>
-                    <span class="tag">Python</span>
-                    <p>Reducing memory usage by 70% using efficient data types...</p>
-                </div>
-                <div class="blog-item">
-                    <h4>Advanced SQL Window Functions for Churn</h4>
-                    <span class="tag">SQL</span>
-                    <p>Calculating rolling averages to predict user drop-off rates...</p>
-                </div>
-            </div>
+            if (menu.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        }
 
-            <!-- Project Table -->
-            <div class="card glass-card table-card">
-                <h3>Project Portfolio</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Project Name</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Customer Churn Prediction</td>
-                            <td><span class="badge success">Approved</span></td>
-                        </tr>
-                        <tr>
-                            <td>A/B Testing Analysis</td>
-                            <td><span class="badge success">Success</span></td>
-                        </tr>
-                        <tr>
-                            <td>Sales Forecasting Model</td>
-                            <td><span class="badge warning">In Progress</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-    </main>
-</div>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-<script src="script.js"></script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar Scroll Effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+                nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (!menu.contains(e.target) && !hamburger.contains(e.target) && menu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    </script>
 </body>
 </html>
